@@ -40,15 +40,25 @@ def 获取全国的总数据():
 def 获取历史数据():
     url ='http://www.dzyong.top:3005/yiqing/history'
     data = requests.get(url=url,headers=dailichi()).json()['data']
-    txt = []
+    # txt = []
     if os.path.exists("%s.csv"%(data[0]['date'])):
         os.remove("%s.csv"%(data[0]['date']))
     with open('%s.csv'%(data[0]['date']),'a+')as f:
         f.write('时间,确诊人数,疑似人数,治愈人数,死亡人数,疑似人数增量\n')
 
     for x in data[::-1]:
-        txt+=('时间:'+str(x['date']),'确诊人数:'+str(x['confirmedNum']),'疑似人数:'+str(x['suspectedNum']),'治愈人数:'+str(x['curesNum']),'死亡人数:'+str(x['deathsNum']),'疑似人数增量:'+str(x['suspectedIncr']))
+        # txt+=('时间:'+str(x['date']),'确诊人数:'+str(x['confirmedNum']),'疑似人数:'+str(x['suspectedNum']),'治愈人数:'+str(x['curesNum']),'死亡人数:'+str(x['deathsNum']),'疑似人数增量:'+str(x['suspectedIncr']))
         with open('%s.csv'%(data[0]['date']),'a+')as f:
             f.write(str(x['date'])+','+str(x['confirmedNum'])+','+str(x['suspectedNum'])+','+str(x['curesNum'])+','+str(x['deathsNum'])+','+str(x['suspectedIncr'])+'\n')
 
-获取历史数据()
+def 获取疫情数据地区():
+    url ='http://www.dzyong.top:3005/yiqing/area'
+    data = requests.get(url=url,headers=dailichi()).json()['data']
+    if os.path.exists("地区疫情情况.csv"):
+        os.remove('地区疫情情况.csv')
+    with open('地区疫情情况.csv','a+')as f:
+        f.write('省,城市,确证人数,疑似人数,治愈人数,死亡人数\n')
+    for x in data:
+        # print(x['provinceName'],x['cityName'],x['confirmedCount'],x['suspectedCount'],x['curedCount'],x['deadCount'])
+        with open('地区疫情情况.csv','a+')as f:
+            f.write(str(x['provinceName'])+','+str(x['cityName'])+','+str(x['confirmedCount'])+','+str(x['suspectedCount'])+','+str(x['curedCount'])+','+str(x['deadCount'])+'\n')
