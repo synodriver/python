@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
+#!/usr/bin/python3
+'''
+B站粉丝监控，消息发送
+@File    :   test2.py
+@Time    :   2020/02/17 20:58:53
+@Author  :   未闻丶死讯
+@Contact :   1761512493@qq.com
+'''
 
-"""
-    B站粉丝监控，消息发送
-    Time : 2020-1-31
-    Author : BobH (bilibili:我的小任_真)
-    QQ : 1551608379
-    仅供学习，请勿用作非法用途
-    请勿用作盈利用途
-"""
-
+    
 import requests
 import ssl
 from requests.auth import HTTPBasicAuth
