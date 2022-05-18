@@ -18,10 +18,7 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 def tihuan(ss):
     return  ss.replace('\\','').replace('/','').replace(':','').replace('*','').replace('?','').replace('"','').replace('>','').replace('<','').replace('|','').replace('.','')
 gg = threading.Lock()
@@ -38,7 +35,8 @@ def down():
             gg.release()
         # url = 'https://music.163.com/#/song?id=28891492'
         id = re.findall(r'https://music.163.com/#/song\?id=(.*)',url,re.S)[0]
-        url ='http://www.flvcd.com/parse.php?format=&kw=http%3A%2F%2Fmusic.163.com%2F%23%2Fsong%3Fid%3D'+id
+        url = f'http://www.flvcd.com/parse.php?format=&kw=http%3A%2F%2Fmusic.163.com%2F%23%2Fsong%3Fid%3D{id}'
+
         # print(url)
         req = requests.get(url,headers = dailichi())
         # print(req.text)
@@ -50,7 +48,7 @@ def down():
 ##        response = requests.get(urll)
 ##        with open('%s.mp3'%name,'wb')as f:
 ##            f.write(response.content)
-        urlretrieve(url,'./%s.mp3'%name)
+        urlretrieve(url, f'./{name}.mp3')
 
 def main():
     global u
@@ -68,7 +66,7 @@ def main():
     response = requests.get(url,headers = head)
     song_id = re.findall('<li><a href="/song\?id=(.*?)">',response.text,re.S)
     for url in song_id:
-        url = 'https://music.163.com/#/song?id='+url
+        url = f'https://music.163.com/#/song?id={url}'
         # print(url)
         u.append(url)
         # down(url)
@@ -76,5 +74,5 @@ if __name__ == '__main__':
     main()
     print(u)
     print("ok")
-    for x in range(32):
+    for _ in range(32):
         threading.Thread(target=down).start()

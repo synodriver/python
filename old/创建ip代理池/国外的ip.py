@@ -24,11 +24,9 @@ class ip_daili_chi():
         sle = parsel.Selector(response.text)
         ipp = sle.xpath('//*[@id="tblproxy"]').re('"PROXY_IP":"(.*?)"', re.S)
         duankou_16 = sle.xpath('//*[@id="tblproxy"]').re('"PROXY_PORT":"(.*?)"', re.S)
-        duankou = []
-        for x in duankou_16:
-            duankou.append(str(int(x, 16)))
+        duankou = [str(int(x, 16)) for x in duankou_16]
         for x in zip(ipp, duankou):
-            self.ip.append(x[0] + ":" + x[1])
+            self.ip.append(f"{x[0]}:{x[1]}")
 
     def dailichi(self):
         daili = [
@@ -43,11 +41,7 @@ class ip_daili_chi():
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
         ]
         dai = random.choice(daili)
-        # print(dai)
-        head = {
-            'User-Agent': '%s' % dai
-        }
-        return head
+        return {'User-Agent': f'{dai}'}
 
     def yanzheng(self):
         while True:
@@ -58,23 +52,18 @@ class ip_daili_chi():
             ip_chi = self.ip.pop()
             # print(ip_chi)
             self.gg.release()
-            proxies = {
-                "http": "http://" + ip_chi,
-                "https": "http://" + ip_chi,
-            }
+            proxies = {"http": f"http://{ip_chi}", "https": f"http://{ip_chi}"}
             try:
                 req = requests.get('https://mcheika.com/', proxies=proxies, timeout=3)
-                # print(ip_chi)
-                file = open('可用ip.txt', 'a')
-                file.write(ip_chi + '\n')
-                file.close()
-                # print('yes')
+                with open('可用ip.txt', 'a') as file:
+                    file.write(ip_chi + '\n')
+                        # print('yes')
             except:
                 # print('no')
                 pass
 
     def main(self):
-        for x in range(20):
+        for _ in range(20):
             threading.Thread(target=self.yanzheng).start()
         while len(threading.enumerate()) > 1:
             pass
@@ -82,18 +71,13 @@ class ip_daili_chi():
     def requests_get(self,url):
         # url = 'https://www.doutula.com/photo/list/?page=1'
         import requests
-        file = open('可用ip.txt','r')
-        txt = file.read().split('\n')
-        file.close()
+        with open('可用ip.txt','r') as file:
+            txt = file.read().split('\n')
         for ip in txt:
-            proxies = {
-                "http": "http://%s"%str(ip),
-                "https": "http://%s"%str(ip),
-            }
+            proxies = {"http": f"http://{str(ip)}", "https": f"http://{str(ip)}"}
             try:
-                response = requests.get(url,proxies= proxies,timeout = 5)
                 # print(response.text)
-                return response
+                return requests.get(url,proxies= proxies,timeout = 5)
             except:
                 pass
         print("没有可用ip")

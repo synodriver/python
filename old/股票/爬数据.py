@@ -5,16 +5,14 @@ import re
 import threading
 gg = threading.Lock()
 URL = []
-file = open('list.txt','r')
-urll = file.readlines()
-# print(urll)
-file.close()
+with open('list.txt','r') as file:
+    urll = file.readlines()
 def url_list():
     global URL
     for x in urll:
         x= x.split('\t')
-        url = "http://gu.qq.com/%s/gp"%x[1][:-1]
-        URL.append(url+' '+x[0])
+        url = f"http://gu.qq.com/{x[1][:-1]}/gp"
+        URL.append(f'{url} {x[0]}')
 # print(URL)
 def down(url,name):
     try:
@@ -73,7 +71,7 @@ def MAIN():
         down(url[0],url[1])
 if __name__ == '__main__':
     url_list()
-    for x in range(10):
+    for _ in range(10):
         threading.Thread(target=MAIN).start()
     while len(threading.enumerate())>1:
         pass

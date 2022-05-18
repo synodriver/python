@@ -9,14 +9,14 @@ def youxiyingqing():
     a = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
     def ppprint(num):
         x = random.randint(0,7)
-        print("\033[0;3%sm" % x + "%s" % num + "\033[0m")
+        print("\033[0;3%sm" % x + f"{num}" + "\033[0m")
     def dayin():
         # print("233")
         os.system("cls")
         # print('-'*21)
         print('\033[033m{}\033[033m'.format('-'*21))
         for row in a:
-            print('{}'.format("|".join([str(col or ' ').center(4) for col in row])))
+            print(f"""{"|".join([str(col or ' ').center(4) for col in row])}""")
             # ppprint('{}'.format("|".join([str(col or ' ').center(4) for col in row])))
             print('\033[033m{}\033[033m'.format('-' * 21))
         # print("得分",summ[0])
@@ -51,7 +51,7 @@ def youxiyingqing():
             fff= 0
             for x in range(3):
                 for y in range(3):
-                    if a[x][y]==a[x+1][y] or a[x][y]==a[x][y+1]:
+                    if a[x][y] in [a[x + 1][y], a[x][y + 1]]:
                         fff = 1
                         return
             if a[2][3]==a[3][3] or a[3][2]==a[3][3]:
@@ -155,9 +155,7 @@ def youxiyingqing():
     def suiji():
         zb=[]
         for x in range(4):
-            for y in range(4):
-                if a[x][y]==0:
-                    zb.append(x*10+y)
+            zb.extend(x*10+y for y in range(4) if a[x][y]==0)
         # print(zb)
         if zb!=[]:
             x= random.choice(zb)
@@ -172,7 +170,7 @@ def youxiyingqing():
         op = eval(op)
         op = str(op)
         # print(op)
-        if op in ['Key.up','Key.down','Key.left','Key.right','*']:
+        if op in {'Key.up', 'Key.down', 'Key.left', 'Key.right', '*'}:
             # print(op)
             if op =='Key.up':
                 www()
@@ -185,7 +183,7 @@ def youxiyingqing():
             elif op =='*':
                 init()
                 # start()
-            if not op =='*':
+            if op != '*':
                 suiji()
             dayin()
             print("得分：",summ[0])

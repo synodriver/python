@@ -10,6 +10,6 @@ def cipin(path):
     result = sorted(count.items(),key=lambda x:x[1],reverse=True)
     for i in range(20):
         word,count=result[i]
-        print(str(i+1)+'->'+word,':',count)
+        print(f'{str(i+1)}->{word}', ':', count)
 path = '弹幕.txt'
 cipin(path)

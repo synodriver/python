@@ -23,11 +23,7 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 def get_ip(x,y):
     ip = []
     for idd in range(x,y+1):
@@ -46,7 +42,7 @@ def yanzheng(ip):
         'http':f'{ip[0]}:{ip[1]}',
         'https':f'{ip[0]}:{ip[1]}',
     }
-    try :
+    try:
         url = 'http://httpbin.org/get'
         response = requests.get(url=url,headers=dailichi(),proxies = proxies,timeout=5)
         if response.status_code==200:
@@ -54,7 +50,7 @@ def yanzheng(ip):
             # print(txt)
             print(ip)
             with open('可用ip.txt','a+',encoding='utf-8')as f:    
-                f.write(ip[0]+','+ip[1]+'\n')            
+                f.write(f'{ip[0]},{ip[1]}' + '\n')
     except:  
         #print(ip[0]+':'+ip[1]+'不可用')
         pass
@@ -71,9 +67,8 @@ def xicidaili():
         os.remove('可用ip.txt')
     x = get_ip(1,1)
     duoxiancheng(yanzheng,x,0)
-    file= open('可用ip.txt','r',encoding='utf-8')
-    ips = file.read()
-    file.close()
+    with open('可用ip.txt','r',encoding='utf-8') as file:
+        ips = file.read()
     ips = ips.split('\n')[:-1]
     ip = []
     for x in ips:

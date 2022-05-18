@@ -7,7 +7,7 @@ def down(url,name):
     req.encoding = "GBK"
     urll = re.findall('src\=\"(.*?)\" />',req.text)[0]
     # print(urll)
-    with open(name+'.jpg','wb') as f :
+    with open(f'{name}.jpg', 'wb') as f:
         f.write(requests.get(urll).content)
 def get():
     response = requests.get("http://news.4399.com/blhx/tujian/")

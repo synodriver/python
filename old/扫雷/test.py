@@ -14,11 +14,7 @@ def init():
             mapp[x][y]='*'
             lei+=1
     def hefa(x,y):
-        if 0<=x<9 and 0<=y<9:
-            if mapp[x][y]=="*":
-                return True
-            return False
-        return False
+        return mapp[x][y] == "*" if 0<=x<9 and 0<=y<9 else False
     for i in range(9):
         for j in range(9):
             if mapp[i][j]!="*":
@@ -50,23 +46,22 @@ def dayin(hanshu):
             print(hanshu[i][j],end='|')
         print()
 def kai(x,y):
-    if 0<=x<9 and 0<=y<9:
-        if xianshi[x][y]=='/' and mapp[x][y]==0 :
-            xianshi[x][y]=mapp[x][y]
-            kai(x-1,y-1)
-            kai(x-1,y)
-            kai(x-1,y+1)
-            kai(x,y-1)
-            kai(x,y+1)
-            kai(x+1,y-1)
-            kai(x+1,y)
-            kai(x+1,y+1)
-            return 
-        elif mapp[x][y]=="*":
-            return 
-        else :
-            xianshi[x][y]=mapp[x][y]
-            return 
+    if not 0 <= x < 9 or not 0 <= y < 9:
+        return
+    if xianshi[x][y]=='/' and mapp[x][y]==0:
+        xianshi[x][y]=mapp[x][y]
+        kai(x-1,y-1)
+        kai(x-1,y)
+        kai(x-1,y+1)
+        kai(x,y-1)
+        kai(x,y+1)
+        kai(x+1,y-1)
+        kai(x+1,y)
+        kai(x+1,y+1)
+    elif mapp[x][y] != "*":
+        xianshi[x][y]=mapp[x][y] 
+
+    return 
 def chuli(x,y):
     if not (0<=x<9 and 0<=y<9):
         print("重新输入")
@@ -87,17 +82,7 @@ def main():
             x = x-1
             y = y-1
             xianshi[x][y]='*'
-            flag = 1
-            for i in range(9):
-                for j in range(9):
-                    if xianshi[i][j]=='/':
-                        flag=0
-            if flag==1:
-                os.system("cls")
-                dayin(xianshi)
-                print("你赢了")
-                return 
-        else :
+        else:
             x = x-1
             y = y-1
             chuli(x,y)
@@ -105,17 +90,17 @@ def main():
                 os.system("cls")
                 dayin(xianshi)
                 print('你输了！！')
-                return 
-            flag = 1
-            for i in range(9):
-                for j in range(9):
-                    if xianshi[i][j]=='/':
-                        flag=0
-            if flag==1:
-                os.system("cls")
-                dayin(xianshi)
-                print("你赢了")
                 return
+        flag = 1
+        for i in range(9):
+            for j in range(9):
+                if xianshi[i][j]=='/':
+                    flag=0
+        if flag==1:
+            os.system("cls")
+            dayin(xianshi)
+            print("你赢了")
+            return
         os.system("cls")
         dayin(xianshi)
 

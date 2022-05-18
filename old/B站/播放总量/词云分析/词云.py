@@ -35,19 +35,19 @@ def ciyun(path):
    plt.axis("off")
    plt.show()
 def cipin(path):
-    import jieba
-    txt = open(path,'r',encoding='utf-8').read()
-    words =jieba.lcut(txt)	# 精准切词
-    count={}
-    for word in words:
-        if len(word) ==1:
-            continue
-        else:
-            count[word]=count.get(word,0)+1
-    result = sorted(count.items(),key=lambda x:x[1],reverse=True)
-    for i in range(20):
-        word,count=result[i]
-        print(str(i+1)+','+word,',',count)
+   import jieba
+   txt = open(path,'r',encoding='utf-8').read()
+   words =jieba.lcut(txt)	# 精准切词
+   count={}
+   for word in words:
+       if len(word) ==1:
+           continue
+       else:
+           count[word]=count.get(word,0)+1
+   result = sorted(count.items(),key=lambda x:x[1],reverse=True)
+   for i in range(20):
+      word,count=result[i]
+      print(f'{str(i+1)},{word}', ',', count)
 
 path = r'F:\python\代码\B站在线人数\词云分析\游戏区评论.txt'
 

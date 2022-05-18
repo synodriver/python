@@ -24,11 +24,7 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 
 
 def down_page(url):
@@ -42,10 +38,16 @@ def down_page(url):
     for i,j in zip(title,price):
         i = i.replace(' ','')
         with open('当当网前50页.txt','a+',encoding="utf-8")as f:
-            f.writelines(str(i)+":"+str(j)+'\n')
+            f.writelines(f"{str(i)}:{str(j)}" + '\n')
 def get_url_list():
     url_list=[]
-    [url_list.append('http://category.dangdang.com/pg%s-cid4011007.html'%(str(i))) for i in range(1,51)]
+    [
+        url_list.append(
+            f'http://category.dangdang.com/pg{str(i)}-cid4011007.html'
+        )
+        for i in range(1, 51)
+    ]
+
     return url_list
 def duoxiancheng(Hanshu,List,Time):
    import time

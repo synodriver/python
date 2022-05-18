@@ -26,18 +26,19 @@ def down(url):
     url = url[:-3]
     try:
         id = url[-12:-4]
-        urll = url+'png'
+        urll = f'{url}png'
         # print(id)
         head = {
-            'referer': "http://www.pixiv.net/member_illust.php?mode=manga_big&illust_id="+str(id)+"&page=0",
-            'User-Agent': '%s' % dailichi()
+            'referer': f"http://www.pixiv.net/member_illust.php?mode=manga_big&illust_id={str(id)}&page=0",
+            'User-Agent': f'{dailichi()}',
         }
+
         r= requests.get(urll,headers = head,timeout = 5,)
         if (r.status_code==404):
-            urll = urll[:-3]+'jpg'
+            urll = f'{urll[:-3]}jpg'
             r = requests.get(urll, headers=head,timeout = 5)
         # print(urll)
-        with open(name+'/'+'%s.jpg'%urll[-15:-7], mode='wb') as f:
+        with open(f'{name}/' + f'{urll[-15:-7]}.jpg', mode='wb') as f:
             f.write(r.content)
     except:
         pass

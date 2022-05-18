@@ -25,7 +25,7 @@ def main():
         xianzai = get_mm(timee)
         cha = get_mm(s)-get_mm(timee)
         print(cha)
-        os.system("shutdown.exe -s -t %s"%str(cha))
+        os.system(f"shutdown.exe -s -t {str(cha)}")
     except:
         pass
 def opp():

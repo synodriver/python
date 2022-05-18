@@ -12,13 +12,13 @@ class Solution:
         """
         lenn = len(nums1)
         num = 0
-        while (len(nums2)!=0):
+        while nums2:
             if nums2[0]<=nums1[num] or nums1[num]==0:
                 nums1.insert(num,nums2[0])
                 nums2.pop(0)
-                if len(nums2)==0:
+                if not nums2:
                     break
-            else :
+            else:
                 num+=1
         
 # @lc code=end

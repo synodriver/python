@@ -20,7 +20,7 @@ def kaishi():
     t1.place(x=0, y=0)
     t1.delete(0.0,'end')
     t1.insert(0.0, random.choice(zi_rep))
-    l1 = tk.Label(win,font=('','50'),text  = "得分为："+str(score)+'                   ')
+    l1 = tk.Label(win, font=('','50'), text=f"得分为：{score}                   ")
     l1.place(x= 1000,y= 50)
     tk.Label(win, font=('', '50'), text='正确率为：0.00\t%').place(x=1000, y=200)
 def red():
@@ -34,7 +34,7 @@ def red():
     t1.place(x=0, y=0)
     t1.delete(0.0,'end')
     t1.insert(0.0, random.choice(zi_rep))
-    l1 = tk.Label(win, font=('', '50'), text="得分为：" + str(score))
+    l1 = tk.Label(win, font=('', '50'), text=f"得分为：{str(score)}")
     l1.place(x=1000, y=50)
     num+=1
     tk.Label(win, font=('', '50'), text='正确率为：' + str('%.2f'%(score * 10 / num)) + '\t%').place(x=1000, y=200)
@@ -49,7 +49,7 @@ def yellow():
     t1.place(x=0, y=0)
     t1.delete(0.0,'end')
     t1.insert(0.0, random.choice(zi_rep))
-    l1 = tk.Label(win, font=('', '50'), text="得分为：" + str(score))
+    l1 = tk.Label(win, font=('', '50'), text=f"得分为：{str(score)}")
     l1.place(x=1000, y=50)
     num+=1
     tk.Label(win, font=('', '50'), text='正确率为：' + str('%.2f'%(score * 10 / num)) + '\t%').place(x=1000, y=200)
@@ -64,7 +64,7 @@ def blue():
     t1.place(x=0, y=0)
     t1.delete(0.0,'end')
     t1.insert(0.0, random.choice(zi_rep))
-    l1 = tk.Label(win, font=('', '50'), text="得分为：" + str(score))
+    l1 = tk.Label(win, font=('', '50'), text=f"得分为：{str(score)}")
     l1.place(x=1000, y=50)
     num+=1
     tk.Label(win, font=('', '50'), text='正确率为：' + str('%.2f'%(score * 10 / num)) + '\t%').place(x=1000, y=200)
@@ -79,7 +79,7 @@ def green():
     t1.place(x=0, y=0)
     t1.delete(0.0,'end')
     t1.insert(0.0, random.choice(zi_rep))
-    l1 = tk.Label(win, font=('', '50'), text="得分为：" + str(score))
+    l1 = tk.Label(win, font=('', '50'), text=f"得分为：{str(score)}")
     l1.place(x=1000, y=50)
     num+=1
     tk.Label(win, font=('', '50'), text='正确率为：' + str('%.2f'%(score * 10 / num)) + '\t%').place(x=1000, y=200)

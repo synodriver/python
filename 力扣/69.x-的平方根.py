@@ -9,7 +9,7 @@ class Solution:
     def mySqrt(self, x: int) -> int:
         if x==1:
             return 1
-        l = int(0)
+        l = 0
         r = x
         mid = (l+r)//2
         while True:

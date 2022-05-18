@@ -1,8 +1,8 @@
 from PIL import Image
 
 img_file = Image.open("./15.jpg")
-for x in range(0, img_file.size[1]):
-    for y in range(0, img_file.size[0]):
+for x in range(img_file.size[1]):
+    for y in range(img_file.size[0]):
         gay = img_file.getpixel((y, x))
         # print(gay)
         if gay[0]==255 and gay[1]==255 and gay[2]==255:

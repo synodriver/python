@@ -30,11 +30,7 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 def get_id(url):
     req = requests.get(url)
     req.encoding = 'utf-8'
@@ -44,14 +40,15 @@ def get_id(url):
 def main(video_id,xx_id,title):
     while True:
         try:
-            url  = "https://video.coral.qq.com/varticle/"+video_id+"/comment/v2?callback=_varticle4489357899commentv2&orinum=10&oriorder=o&pageflag=1&cursor="+xx_id+"&scorecursor=0&orirepnum=2&reporder=o&reppageflag=1&source=132&"
+            url = f"https://video.coral.qq.com/varticle/{video_id}/comment/v2?callback=_varticle4489357899commentv2&orinum=10&oriorder=o&pageflag=1&cursor={xx_id}&scorecursor=0&orirepnum=2&reporder=o&reppageflag=1&source=132&"
+
             # print(url)
             response = requests.get(url,headers = dailichi())
             # print(response.text)
             txt_data = re.findall('\"content\"\:\"(.*?)"\,\"up\"\:',response.text)
             # print(txt_data)
             for y in txt_data:
-                with open(file='%s.txt'%str(title),encoding='utf-8',mode='a+')as f:
+                with open(file=f'{str(title)}.txt', encoding='utf-8', mode='a+') as f:
                     f.write(y+'\n')
             xx_id = re.findall('"last":"(.*?)"',response.text)[0]
         except:
@@ -77,7 +74,7 @@ def get_url_list(url):
     response = requests.request("GET", url, headers=headers)
     response.encoding = 'GBK'
     urll = re.findall("\<a href\=\"(.*?)\" _stat\=\"videolist\:click\" r\-on\=\"\{click\: changeToVideo\.bind\(null\,\'.*?\'\)\}\"\>",response.text)
-    url_list = ['https://v.qq.com'+str(i) for i in urll]
+    url_list = [f'https://v.qq.com{str(i)}' for i in urll]
     url_list = list(set(url_list))
 from concurrent.futures import ThreadPoolExecutor
 if __name__ == '__main__':
@@ -86,10 +83,8 @@ if __name__ == '__main__':
     url_list = get_url_list(url)
     pool= ThreadPoolExecutor(max_workers=5)
     import time
-    num =1
-    for i in url_list:
+    for num, i in enumerate(url_list, start=1):
         pool.submit(mainn,i)
         time.sleep(5)
         print(num)
-        num+=1
     pool.shutdown()

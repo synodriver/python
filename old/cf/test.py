@@ -40,7 +40,7 @@ def get_changshu(url):
         f.write('\n\n\n\n\n')
 url_list,name_list = get_name_url()
 for x,y in zip(url_list,name_list):
-    url = 'http://codeforces.com/contests/with/'+str(x)
+    url = f'http://codeforces.com/contests/with/{str(x)}'
     with open('ans.csv','a+')as f:
         f.write("%s,%s\n"%(y,x))
         f.write("场次,比赛名称,当前场次的排名,当前场次解决的题数,当前场次分数变化,最终的得分,\n")

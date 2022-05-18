@@ -3,7 +3,7 @@ import  parsel
 import os
 def download_img(url,name):
     from  urllib.request import urlretrieve
-    urlretrieve(url,'./%s.jpg'%name)
+    urlretrieve(url, f'./{name}.jpg')
 url  = 'https://movie.douban.com/top250'
 response = requests.get(url)
 # print(response.text)

@@ -17,7 +17,7 @@ from concurrent.futures import ThreadPoolExecutor
 #下载快的
 def download_img(xx):
     from  urllib.request import urlretrieve
-    urlretrieve(xx[1],'豆瓣'+'/'+'./%s.jpg'%str(xx[0]))
+    urlretrieve(xx[1], '豆瓣'+'/' + f'./{str(xx[0])}.jpg')
 import os
 if not os.path.exists('豆瓣'):
     os.mkdir('豆瓣')
@@ -36,11 +36,7 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 def down_page(url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.79 Safari/537.36',
@@ -53,7 +49,13 @@ def down_page(url):
     [p.submit(download_img,i) for i in txt]
     p.shutdown()
 url_list =[]
-[url_list.append('https://movie.douban.com/top250?start='+str(num)+'&filter=') for num in range(0,251,25)]
+[
+    url_list.append(
+        f'https://movie.douban.com/top250?start={str(num)}&filter='
+    )
+    for num in range(0, 251, 25)
+]
+
 
 print(url_list)
 

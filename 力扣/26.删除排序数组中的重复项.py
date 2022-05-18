@@ -7,14 +7,11 @@
 # @lc code=start
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
-                x = 0
-                while True:
-                    if x<len(nums)-1:
-                        while ( x<len(nums)-1 and nums[x]==nums[x+1]):
-                            nums.pop(x)
-                        x+=1
-                    else:
-                        break
-                return len(nums)
+        x = 0
+        while x < len(nums) - 1:
+            while ( x<len(nums)-1 and nums[x]==nums[x+1]):
+                nums.pop(x)
+            x+=1
+        return len(nums)
 # @lc code=end
 

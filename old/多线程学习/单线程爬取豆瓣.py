@@ -25,11 +25,7 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 def down_img(url,name):
     with open(file = '豆瓣'+'/'+name+'.jpg',mode='wb')as f:
         f.write(requests.get(url=url,headers=dailichi()).content)
@@ -44,5 +40,5 @@ def down_page(url):
     [down_img(i[1],i[0]) for i in txt]
 
 for num in range(0,251,25):  
-    url ='https://movie.douban.com/top250?start='+str(num)+'&filter='
+    url = f'https://movie.douban.com/top250?start={str(num)}&filter='
     down_page(url)

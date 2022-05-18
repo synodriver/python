@@ -21,20 +21,13 @@ def get_danci(url):
     """
     txt = re.findall('\<div class\=\"qh_..\" id\=\"..\d\"\>(.*?)<\/div\>',response.text)
     num  = 0
-    zimu = []
-    for i in range(ord("A"),ord("Z")+1):
-        zimu.append(chr(i))
-    for i in range(ord("a"),ord("z")+1):
-        zimu.append(chr(i))
+    zimu = [chr(i) for i in range(ord("A"),ord("Z")+1)]
+    zimu.extend(chr(i) for i in range(ord("a"),ord("z")+1))
     for x in txt:
         x= x.replace("&#39;",'\'').replace("&quot;",'').replace("<p>","").replace("</p>","")
         if "img src=" not in x and "<img alt=" not in x and "<p style=" not in x:
-            pass
             # print(x)\
-            if x[0] in zimu:
-                txtt+='英文：'
-            else:
-                txtt+='中文:'
+            txtt += '英文：' if x[0] in zimu else '中文:'
             txtt+=x
             txtt+='\n\n'
     txtt+='\n\n\n'
@@ -49,12 +42,13 @@ def get_danci(url):
     return txtt
 import random
 def get_url():
-    url = 'http://www.kekenet.com/read/ss/List_'+str(random.randint(1,1086))+'.shtml'
+    url = f'http://www.kekenet.com/read/ss/List_{str(random.randint(1,1086))}.shtml'
+
     # url = 'http://www.kekenet.com/read/ss/List_1086.shtml'
     req = requests.get(url)
     req.encoding= 'UTF-8'
     urll = re.findall('\<a href\=\"\/read\/(.*?)\.shtml\" target\=\"',req.text)
-    return 'http://www.kekenet.com/read/'+str(random.choice(urll))+'.shtml'
+    return f'http://www.kekenet.com/read/{str(random.choice(urll))}.shtml'
 url = get_url()
 txtttt = get_danci(url)
 

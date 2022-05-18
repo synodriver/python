@@ -100,21 +100,19 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 def get_txt():
     num = random.randint(2,16)
-    url = 'http://xiaohua.zol.com.cn/neihan/%s.html'%str(num)
+    url = f'http://xiaohua.zol.com.cn/neihan/{str(num)}.html'
     # print(url)
     response = requests.get(url,headers = dailichi())
-    # print(response.text)
-    txt = re.findall('\<span class\=\"article\-title\"\>\<a target\=\"_blank\" href\=\"(.*?)"\>.*?\<\/a\>\<\/span\>',response.text,re.S)
-    return txt
+    return re.findall(
+        '\<span class\=\"article\-title\"\>\<a target\=\"_blank\" href\=\"(.*?)"\>.*?\<\/a\>\<\/span\>',
+        response.text,
+        re.S,
+    )
 def down(url):
-    url = 'http://xiaohua.zol.com.cn'+str(url)
+    url = f'http://xiaohua.zol.com.cn{str(url)}'
     req = requests.get(url,headers = dailichi())
     title = re.findall('<h1 class="article-title">(.*?)</h1>',req.text)[0]
     txtt = re.findall('\<div class\=\"article\-text\"\>(.*?)\<\/div\>',req.text,re.S)[0]

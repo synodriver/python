@@ -24,7 +24,7 @@ def get_score(url):
     for i in score:
         # print(i[0],i[1])
         with open('a.txt','a+')as f:
-            f.write('店铺id：'+i[0]+'\n'+i[1]+',评分：'+i[2]+'\n')
+            f.write(f'店铺id：{i[0]}' + '\n' + i[1] + ',评分：' + i[2] + '\n')
         ip_chi.append([i[0],i[1]])
 def get_id():
     from concurrent.futures import ThreadPoolExecutor
@@ -47,17 +47,34 @@ def get_pinglun(id):
         'cache-control': "no-cache"
         }
     for num in range(0,100,10):
-        querystring = {"uuid":"4522b7c440084b7f9141.1576472601.1.0.0","platform":"1","partner":"126","originUrl":"https%3A%2F%2Fwww.meituan.com%2Fmeishi%2F5218010%2F","riskLevel":"1","optimusCode":"10","id":"%s"%(str(id[0])),"userId":"1062342147","offset":"%s"%str(num),"pageSize":"10","sortType":"1"}
+        querystring = {
+            "uuid": "4522b7c440084b7f9141.1576472601.1.0.0",
+            "platform": "1",
+            "partner": "126",
+            "originUrl": "https%3A%2F%2Fwww.meituan.com%2Fmeishi%2F5218010%2F",
+            "riskLevel": "1",
+            "optimusCode": "10",
+            "id": f"{str(id[0])}",
+            "userId": "1062342147",
+            "offset": f"{str(num)}",
+            "pageSize": "10",
+            "sortType": "1",
+        }
+
         response = requests.request("GET", url, headers=headers, params=querystring)
         # print(response.text)
         txt  = response.json()
         txt = txt['data']['comments']
-        for  x in txt:
+        for x in txt:
             # print(x['comment'])
-            with open('%s.txt'%(str(id[1])),'a+',encoding='utf-8')as f:
+            with open(f'{str(id[1])}.txt', 'a+', encoding='utf-8') as f:
                 f.write(x['comment']+'\n')
 if __name__ == '__main__':
-    url_list = ["https://cd.meituan.com/meishi/sales/pn%s/" % (str(i)) for i in range(1, 65, 1)]
+    url_list = [
+        f"https://cd.meituan.com/meishi/sales/pn{str(i)}/"
+        for i in range(1, 65)
+    ]
+
     ip_chi = []
     get_id()
     print("获取ip完成")

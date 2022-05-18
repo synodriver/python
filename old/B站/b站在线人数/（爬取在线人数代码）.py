@@ -16,11 +16,7 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 def get_time():
     timeStamp = time.time()
     timeArray = time.localtime(timeStamp)
@@ -35,13 +31,12 @@ def get_data():
     # date = {'region_count': {'1': 601, '11': 1, '119': 33, '129': 218, '13': 37, '138': 720, '155': 341, '160': 7230, '165': 48, '167': 31, '17': 1407, '177': 32, '181': 1438, '188': 237, '23': 0, '3': 1458, '36': 1234, '4': 6243, '5': 1589, '75': 543, '76': 455}, 'all_count': 20771, 'web_online': 2710876, 'play_online': 3762202}
     web_online = date['web_online']
     play_online = date['play_online']
-    zong_online = web_online+play_online
-    return zong_online
+    return web_online+play_online
 def main():
     time = get_time()
     zong_online = get_data()
     with open(file = "B站在线人数统计.txt",mode = 'a+',encoding='utf-8')as f:
-        f.write(str(time)+','+str(zong_online)+'\n')
+        f.write(f'{str(time)},{str(zong_online)}' + '\n')
 print(get_time())
 if __name__ == "__main__":
     while True:

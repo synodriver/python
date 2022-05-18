@@ -15,17 +15,12 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 def get_name(id):
     url =f'https://space.bilibili.com/{id}'
     response = requests.get(url=url,headers=dailichi())
     txt = response.text
-    name = re.findall('<title>(.*?)的个人空间 - 哔哩哔哩',txt,re.S)[0]
-    return name
+    return re.findall('<title>(.*?)的个人空间 - 哔哩哔哩',txt,re.S)[0]
 def main(id):
     url = f'https://api.bilibili.com/x/relation/stat?vmid={id}'
     name = get_name(id)
@@ -34,16 +29,15 @@ def main(id):
     pep = response.json()['data']['follower']
     # print(response.json()['data']['follower'])
     with open(f'{name}粉丝数.txt','a+')as f:
-        f.write(str(timee)+','+str(pep)+'\n')
-    file = open(f'{name}粉丝数.txt')
-    txt =''
-    x= file.read().split('\n')
-    if len(x)==2:
-        txt+=f'{name},你昨天的粉丝我不知道耶\n'
-    else :
-        txt+=f"{name},你昨天的粉丝是：{x[-3].split(',')[1]}\n"
-    txt+=f'{name},你今天的粉丝是：{pep}\n'
-    file.close()
+        f.write(f'{str(timee)},{str(pep)}' + '\n')
+    with open(f'{name}粉丝数.txt') as file:
+        txt =''
+        x= file.read().split('\n')
+        if len(x)==2:
+            txt+=f'{name},你昨天的粉丝我不知道耶\n'
+        else :
+            txt+=f"{name},你昨天的粉丝是：{x[-3].split(',')[1]}\n"
+        txt+=f'{name},你今天的粉丝是：{pep}\n'
     if len(x)==2:
         txt+='对不起，我求不到差值耶！！'
     else :
@@ -82,8 +76,7 @@ def qq_youjian(fajianren,shoujianren,zhuti,txt):
 
 def get_time():
     import datetime
-    now_time = str(datetime.datetime.now())[:10]
-    return now_time
+    return str(datetime.datetime.now())[:10]
 get_time()
 if __name__ == "__main__":
     # print(main('32482364'))

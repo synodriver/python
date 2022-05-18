@@ -7,7 +7,7 @@
 # @lc code=start
 class Solution:
     def longestCommonPrefix(self, strs: List[str]) -> str:
-        if len(strs)==0:
+        if not strs:
             return ""
         ans = str(strs[0])
         for x in strs[1:]:

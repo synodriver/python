@@ -49,7 +49,7 @@ strmin_val = str(min_val)
 #(0,0,225)：矩形的边框颜色；2：矩形边框宽度
 cv2.rectangle(target,min_loc,(min_loc[0]+twidth,min_loc[1]+theight),(0,0,225),2)
 #显示结果,并将匹配值显示在标题栏上
-cv2.imshow("MatchResult----MatchingValue="+strmin_val,target)
+cv2.imshow(f"MatchResult----MatchingValue={strmin_val}", target)
 cv2.waitKey()
 cv2.destroyAllWindows()
 print(min_val)

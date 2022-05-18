@@ -3,18 +3,10 @@ import os
 import time
 from pynput.keyboard import Controller, Key, Listener
 color = ''
-map = {}
-map['d'] = '绿'
-map['f'] = '黄'
-map['j'] = '红'
-map['k'] = '蓝'
+map = {'d': '绿', 'f': '黄', 'j': '红', 'k': '蓝'}
 zi_rep = ['蓝', '红', '黄', '绿']
 yanse = [31, 32, 33, 34]
-zidian = {}
-zidian['31'] = '红'
-zidian['32'] = '绿'
-zidian['33'] = '黄'
-zidian['34'] = '蓝'
+zidian = {'31': '红', '32': '绿', '33': '黄', '34': '蓝'}
 num = 0
 score = 0
 start_time = time.time()
@@ -35,18 +27,17 @@ def on_press(key):
         if key.char  in ['d','f','k','j']:
             if map[str(key.char)]==color:
                 print("\r正确")
-                num+=1
                 score+=1
             else:
                 print("\r错误")
-                num +=1
+            num+=1
             color= xxx()
-        else :
+        else:
             print("\r错误输入重新输入")
         if num==10:
             end_time= time.time()
             TIME = end_time-start_time
-            print('你花了'+str(TIME)+'秒的时间,\n正确率为：'+str(score*10)+'%')
+            print(f'你花了{str(TIME)}' + '秒的时间,\n正确率为：' + str(score*10) + '%')
             os._exit(0)
 
     except AttributeError:

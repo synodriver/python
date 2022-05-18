@@ -47,17 +47,13 @@ txt="""
 """
 id = re.findall('\"id\"\:(.*?)\,',txt)
 id = list(set(id))
-# print(id)
-# print(len(id))
-# import time
-file  = open('慕课.txt','a+',encoding='utf-8');
-for x in id:
-    try:
-        xx = get_txt('https://www.icourse163.org/course/NUDT-'+x)
-        file.write(xx)
-        file.write('\n')
-    except:
-        pass
-    # print(xx)
-    print("-----------------------------------")
-file.close()
+with open('慕课.txt','a+',encoding='utf-8') as file:
+    for x in id:
+        try:
+            xx = get_txt(f'https://www.icourse163.org/course/NUDT-{x}')
+            file.write(xx)
+            file.write('\n')
+        except:
+            pass
+        # print(xx)
+        print("-----------------------------------")

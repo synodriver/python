@@ -20,19 +20,16 @@ from urllib import parse
 import time
 import datetime
 def get_cook():
-    file  = open('cook.txt')
-    cook = file.read()
-    file.close()
+    with open('cook.txt') as file:
+        cook = file.read()
     return cook
 def get_csrd_token():
-    file  = open('csrd_token.txt')
-    csrd_token = file.read()
-    file.close()
+    with open('csrd_token.txt') as file:
+        csrd_token = file.read()
     return csrd_token
 def get_id():
-    file  = open('自己的id.txt')
-    自己的id = file.read()
-    file.close()
+    with open('自己的id.txt') as file:
+        自己的id = file.read()
     return 自己的id
 csrf_token=get_csrd_token()
 cook = get_cook()
@@ -47,28 +44,30 @@ def SendWelcomeMsg(fanid,followIndex,fanname):
     constra_msg = constra_msg.replace("{index}",str(followIndex))
     return constra_msg
 headers = {
-    'Accept' : '*/*',
-    'Accept-Encoding' : 'gzip, deflate, br',
-    'Accept-Language' : 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
-    'Connection' : 'keep-alive',
-    'Cookie' : "%s"%cook,
-    'Host' : 'api.bilibili.com',
-    'Referer' : "https://space.bilibili.com/%s/fans/fans"%自己的id,
-    'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0'
+    'Accept': '*/*',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
+    'Connection': 'keep-alive',
+    'Cookie': f"{cook}",
+    'Host': 'api.bilibili.com',
+    'Referer': f"https://space.bilibili.com/{自己的id}/fans/fans",
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0',
 }
+
 msg_headers = {
-    'Accept' : 'application/json, text/plain, */*',
-    'Accept-Encoding' : 'gzip, deflate, br',
-    'Accept-Language' : 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
-    'Connection' : 'keep-alive',
-    'Cookie' : "%s"%cook,
-    'Host' : 'api.vc.bilibili.com',
-    'Origin' : 'https://message.bilibili.com',
-    'Content-Type' : 'application/x-www-form-urlencoded',
-    'Referer' : 'https://message.bilibili.com/',
-    'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0',
-    'Pragma' : 'no-cache'
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
+    'Connection': 'keep-alive',
+    'Cookie': f"{cook}",
+    'Host': 'api.vc.bilibili.com',
+    'Origin': 'https://message.bilibili.com',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Referer': 'https://message.bilibili.com/',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0',
+    'Pragma': 'no-cache',
 }
+
 max_monitor_cnt = 100
 fan_list = {}
 url = "https://api.bilibili.com/x/relation/followers?vmid=%s&pn={page}&ps=20&order=desc&jsonp=jsonp"%自己的id
@@ -106,7 +105,7 @@ def GetTotalFlollowerCnt():
 def 私信(对方的id,信息):
     
     headerss = {
-        'Cookie': "%s"%cook,
+        'Cookie': f"{cook}",
         'Host': 'api.vc.bilibili.com',
         'Origin': 'https://message.bilibili.com',
         'Referer': 'https://message.bilibili.com/',
@@ -114,17 +113,19 @@ def 私信(对方的id,信息):
         'Sec-Fetch-Site': 'same-site',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36',
     }
+
     url = 'https://api.vc.bilibili.com/web_im/v1/web_im/send_msg'
     dataa = {
-            'msg[sender_uid]': f'{自己的id}',
-            'msg[receiver_id]': f"{对方的id}",
-            'msg[receiver_type]': '1',
-            'msg[msg_type]': '1',
-            'msg[msg_status]': '0',
-            'msg[content]': '{"content":"%s\n"}'%(信息),
-            'mobi_app': 'web',
-            'csrf_token': "%s"%(csrf_token),
+        'msg[sender_uid]': f'{自己的id}',
+        'msg[receiver_id]': f"{对方的id}",
+        'msg[receiver_type]': '1',
+        'msg[msg_type]': '1',
+        'msg[msg_status]': '0',
+        'msg[content]': '{"content":"%s\n"}' % (信息),
+        'mobi_app': 'web',
+        'csrf_token': f"{csrf_token}",
     }
+
     requests.post(url=url,headers=headerss,data = dataa)
 def CheckFans():
     global fan_list
@@ -137,14 +138,13 @@ def CheckFans():
     for i in range(1,totPage+1):
         tmp = GetFollowerJsonData(i)
         nowtot = tmp['data']['total']
-        if len(tmp['data']['list']) != 0 :
-            totget += len(tmp['data']['list'])
-            for tmpfan in tmp['data']['list']:
-                nowindex = nowindex + 1
-                now_list[tmpfan['mid']] = tmpfan
-                now_list[tmpfan['mid']]['index'] = nowindex
-        else :
+        if len(tmp['data']['list']) == 0:
             break;
+        totget += len(tmp['data']['list'])
+        for tmpfan in tmp['data']['list']:
+            nowindex = nowindex + 1
+            now_list[tmpfan['mid']] = tmpfan
+            now_list[tmpfan['mid']]['index'] = nowindex
     for tmpfan in now_list:
         if tmpfan not in fan_list:
             print("[CheckFans] 检测到新增一名粉丝，uid = " + str(now_list[tmpfan]['mid']) + " ,uname = " + str(now_list[tmpfan]['uname']))
@@ -167,17 +167,16 @@ def InitFanList():
     totPage = math.ceil(targetGet / 20.0)
     totget = 0
     for i in range(1,totPage+1):
-        print("[InitFanList] 获取第 " + str(i) + " 页粉丝...")
+        print(f"[InitFanList] 获取第 {str(i)} 页粉丝...")
         tmp = GetFollowerJsonData(i)
-        if len(tmp['data']['list']) != 0 :
-            totget += len(tmp['data']['list'])
-            for tmpfan in tmp['data']['list']:
-                fan_list[tmpfan['mid']] = tmpfan
-        else :
+        if len(tmp['data']['list']) == 0:
             break;
+        totget += len(tmp['data']['list'])
+        for tmpfan in tmp['data']['list']:
+            fan_list[tmpfan['mid']] = tmpfan
     if totget < targetGet:
         print("[Warn][InitFanList] 没有获取到目标数量的粉丝，检查网络或者权限!")
-        print("[Warn][InitFanList] 目标个数: " + str(targetGet) + " 实际个数: " + str(totget))
+        print(f"[Warn][InitFanList] 目标个数: {str(targetGet)} 实际个数: {str(totget)}")
     else:
         print("[InitFanList] 获取初始粉丝完毕！")
 

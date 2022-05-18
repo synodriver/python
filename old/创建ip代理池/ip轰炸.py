@@ -20,11 +20,7 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 def get_ip():
     global ip
     response = requests.get('http://www.gatherproxy.com/zh/proxylist/country/?c=China',headers = dailichi())
@@ -35,13 +31,11 @@ def get_ip():
     duankou_16 = sle.xpath('//*[@id="tblproxy"]').re('"PROXY_PORT":"(.*?)"',re.S)
     # print(ipp)
     # print(len(ipp))
-    duankou= []
-    for x in duankou_16:
-        duankou.append(str(int(x,16)))
+    duankou = [str(int(x,16)) for x in duankou_16]
     # print(duankou)
     # print(len(duankou))
     for x in zip(ipp,duankou):
-        ip.append(x[0]+":"+x[1])
+        ip.append(f"{x[0]}:{x[1]}")
 
 def yanzheng():
     global  ip
@@ -52,31 +46,22 @@ def yanzheng():
             break
         ip_chi = ip.pop()
         gg.release()
-        proxies = {
-            "http": "http://" + ip_chi,
-            "https": "http://" + ip_chi,
-        }
+        proxies = {"http": f"http://{ip_chi}", "https": f"http://{ip_chi}"}
         try:
             req = requests.get('https://mcheika.com/', proxies=proxies, timeout=3)
-            # print(ip_chi)
-            file = open('可用ip.txt','a')
-            file.write(ip_chi+'\n')
-            file.close()
-            # print('yes')
+            with open('可用ip.txt','a') as file:
+                file.write(ip_chi+'\n')
+                    # print('yes')
         except:
             # print('no')
             pass
 def requests_get(url):
     # url = 'https://www.doutula.com/photo/list/?page=1'
     import requests
-    file = open('可用ip.txt','r')
-    txt = file.read().split('\n')
-    file.close()
+    with open('可用ip.txt','r') as file:
+        txt = file.read().split('\n')
     while True:
-        proxies = {
-            "http": "http://%s"%str(txt[0]),
-            "https": "http://%s"%str(txt[0]),
-        }
+        proxies = {"http": f"http://{str(txt[0])}", "https": f"http://{str(txt[0])}"}
         try:
             response = requests.get(url,proxies= proxies,timeout = 5)
             return
@@ -86,7 +71,7 @@ def get_ipchi():
     if os.path.exists('可用ip.txt'):
         os.remove('可用ip.txt')
     get_ip()
-    for x in range(20):
+    for _ in range(20):
         threading.Thread(target=yanzheng).start()
     while   len(threading.enumerate())>1:
         pass
@@ -95,6 +80,6 @@ def xxx():
     req = requests_get('https://mcheika.com/')
     # print(req.text)
     print("233")
-while   True:
-    for x in range(10):
+while True:
+    for _ in range(10):
         threading.Thread(target=xxx).start()

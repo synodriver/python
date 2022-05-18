@@ -13,32 +13,28 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 
 def p_down(url):
     # print(name)
     url = url[:-3]
     try:
         id = url[-12:-4]
-        urll = url+'png'
+        urll = f'{url}png'
         # print(id)
         head = {
-            'referer': "http://www.pixiv.net/member_illust.php?mode=manga_big&illust_id="+str(id)+"&page=0",
-            'User-Agent': '%s' % dailichi()
+            'referer': f"http://www.pixiv.net/member_illust.php?mode=manga_big&illust_id={str(id)}&page=0",
+            'User-Agent': f'{dailichi()}',
         }
+
         r= requests.get(urll,headers = head,timeout = 5,)
         if (r.status_code==404):
-            urll = urll[:-3]+'jpg'
+            urll = f'{urll[:-3]}jpg'
             r = requests.get(urll, headers=head,timeout = 5)
         # print(urll)
-        with open('%s.jpg'%urll[-15:-7], mode='wb') as f:
+        with open(f'{urll[-15:-7]}.jpg', mode='wb') as f:
             f.write(r.content)
     except:
-        pass
         print('下载失败')
     # print(urll)
 

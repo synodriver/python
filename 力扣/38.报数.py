@@ -9,7 +9,7 @@ class Solution:
     def countAndSay(self, n: int) -> str:
             def xx(s):
                 if len(s)==1:
-                    return '1'+s
+                    return f'1{s}'
                 ss = ""
                 sum = 1
                 for i in range(len(s)-1):
@@ -19,12 +19,8 @@ class Solution:
                         ss+=str(sum)
                         ss+=s[i]
                         sum=1
-                if s[-1]==s[-2]:
-                    ss+=str(sum)
-                    ss+=s[-1]
-                else :
-                    ss+='1'
-                    ss+=s[-1]
+                ss += str(sum) if s[-1]==s[-2] else '1'
+                ss+=s[-1]
                 return ss
             s= '1'
             di = {}

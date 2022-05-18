@@ -7,7 +7,7 @@ class cos():
         self.url = url
     def download_img(self,url, name):
         from urllib.request import urlretrieve
-        urlretrieve(url, '%s.jpg' % name)
+        urlretrieve(url, f'{name}.jpg')
     def dayin(self):
         print(self.txt)
     def jiexi(self):
@@ -22,11 +22,11 @@ class cos():
         title= str(title)
         if not os.path.exists(title):
             os.mkdir(title)
-        num = 1
-        for x in range(0, len(self.txt), 3)[:-2]:
+        for num, x in enumerate(range(0, len(self.txt), 3)[:-2], start=1):
             # print("https://p%simage"%txt[x])
-            self.download_img(url="https://p%simage" % self.txt[x], name=(title + '/' + str(num)))
-            num += 1
+            self.download_img(
+                url=f"https://p{self.txt[x]}image", name=f'{title}/{str(num)}'
+            )
 if __name__ == '__main__':
     # url = 'https://bcy.net/item/detail/6725353762984050952?_source_page=cos'
     url = input()

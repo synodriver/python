@@ -3,24 +3,23 @@ import time
 #下载快的
 def download_img(url,name):
     from  urllib.request import urlretrieve
-    urlretrieve(url,'./%s.jpg'%name)
+    urlretrieve(url, f'./{name}.jpg')
 
 #保存进文件txt
 
 def gettxt(filename, contents):
-    fh = open(filename, 'w', encoding='utf-8')
-    fh.write(contents)
-    fh.close()
+    with open(filename, 'w', encoding='utf-8') as fh:
+        fh.write(contents)
 #保存图片
 def request_download(name,url):
-    path = './%s.jpg'%name
+    path = f'./{name}.jpg'
     r = requests.get(url)
     with open(path, 'wb') as f:
         f.write(r.content)
 #下载音乐和视频
 def download_music(url,name):
     from urllib import request
-    path = './%s.mp3'%name
+    path = f'./{name}.mp3'
     request.urlretrieve(url, path)
     print('下载完成')
 #下载显示进度条
@@ -29,7 +28,7 @@ def down_jindu(url,name):
     zong_size = int(response.headers['content-length'])
     print('文件大小为：%0.2f MB'% (zong_size/1024/1024))
     if response.status_code ==200:
-        with open('%s'%name,'wb') as f:
+        with open(f'{name}', 'wb') as f:
             start = time.time()
             size  = 0
             for data in response.iter_content(chunk_size=1024):
@@ -39,7 +38,7 @@ def down_jindu(url,name):
                 print('\r','下载进度：[','>'*int(100/zong_size*size),'%0.2f'%(size/zong_size*100),'%',']',end='')
         end = time.time()
         print('\n','下载用了%0.2f秒'%(end-start))
-    else :
+    else:
         print('未响应！！！！')
 def get_page(url):
     reponse = requests.get(url)
@@ -61,10 +60,7 @@ def dailichi():
     ]
     dai = random.choice(daili)
     print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 def tihuan(ss):
     return  ss.replace('\\','').replace('/','').replace(':','').replace('*','').replace('?','').replace('"','').replace('>','').replace('<','').replace('|','').replace('.','')
 def qq_youjian(fajianren,shoujianren,zhuti,txt):
@@ -100,15 +96,13 @@ def guge_wutu():
         }
     }
     options.add_experimental_option('prefs', prefs)
-    driver = webdriver.Chrome(chrome_options=options)
     # driver.get("http://huaban.com/")
     #driver.quit()
-    return driver
+    return webdriver.Chrome(chrome_options=options)
 def wujie_wutu():
     from selenium import webdriver
     SERVICE_ARGS = ['--load-images=false', '--disk-cache=true']
-    di = webdriver.PhantomJS(service_args=SERVICE_ARGS)
-    return di
+    return webdriver.PhantomJS(service_args=SERVICE_ARGS)
 # def guge_lanjiazai():
 #     #懒加载
 #     from  selenium import  webdriver

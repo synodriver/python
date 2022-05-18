@@ -15,9 +15,9 @@
 import time
 from concurrent.futures import ThreadPoolExecutor
 def xx(x):
-    print(str(x)+'开始')
+    print(f'{str(x)}开始')
     time.sleep(3)
-    print(str(x)+"结束")
+    print(f"{str(x)}结束")
 
 
 li = [1, 2, 3, 4, 5, 6, 7, 8]

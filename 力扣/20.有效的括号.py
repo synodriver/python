@@ -7,31 +7,28 @@
 # @lc code=start
 class Solution:
     def isValid(self, s: str) -> bool:
-            ss=[]
-            for x in s:
-                if(len(ss)==0):
-                    ss+=x
-                    continue
-                if x==']':
-                    if (ss[-1]=='['):
-                        ss.pop()
-                    else :
-                        ss+=x
-                elif x==')':
-                    if (ss[-1]=='('):
-                        ss.pop()
-                    else :
-                        ss+=x
-                elif x=='}':
-                    if (ss[-1]=='{'):
-                        ss.pop()
-                    else :
-                        ss+=x
+        ss=[]
+        for x in s:
+            if(len(ss)==0):
+                ss+=x
+                continue
+            if x==']':
+                if (ss[-1]=='['):
+                    ss.pop()
                 else :
                     ss+=x
-            if len(ss)==0:
-                return True
+            elif x==')':
+                if (ss[-1]=='('):
+                    ss.pop()
+                else :
+                    ss+=x
+            elif x=='}':
+                if (ss[-1]=='{'):
+                    ss.pop()
+                else :
+                    ss+=x
             else :
-                return False
+                ss+=x
+        return len(ss) == 0
 # @lc code=end
 

@@ -14,19 +14,14 @@ import os
 def requests_get(url):
     # url = 'https://www.doutula.com/photo/list/?page=1'
     import requests
-    file = open('F:\\可用ip.txt','r')
-    txt = file.read().split('\n')
-    file.close()
+    with open('F:\\可用ip.txt','r') as file:
+        txt = file.read().split('\n')
     for ip in txt:
-        proxies = {
-            "http": "http://%s"%str(ip),
-            "https": "http://%s"%str(ip),
-        }
+        proxies = {"http": f"http://{str(ip)}", "https": f"http://{str(ip)}"}
         try:
-            response = requests.get(url,proxies= proxies,timeout = 5)
             # print(response.text)
-            return response
-            # break
+            return requests.get(url,proxies= proxies,timeout = 5)
+                    # break
         except:
             pass
 
@@ -43,11 +38,7 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 
 
 img = []
@@ -56,9 +47,12 @@ gg = threading.Lock()
 
 def get_page():
     global url_page
-    for num in range(0,19,1):
-        url = 'https://apps.game.qq.com/cgi-bin/ams/module/ishow/V1.0/query/workList_inc.cgi?activityId=2735&sVerifyCode=ABCD&sDataType=JSON&iListNum=20&totalpage=0&page=' + str(
-            num) + '&iOrder=0&iSortNumClose=1&jsoncallback=jQuery17105686725581784895_1567387993957&iAMSActivityId=51991&_everyRead=true&iTypeId=2&iFlowId=267733&iActId=2735&iModuleId=2735&_=156738817'
+    for num in range(19):
+        url = (
+            f'https://apps.game.qq.com/cgi-bin/ams/module/ishow/V1.0/query/workList_inc.cgi?activityId=2735&sVerifyCode=ABCD&sDataType=JSON&iListNum=20&totalpage=0&page={str(num)}'
+            + '&iOrder=0&iSortNumClose=1&jsoncallback=jQuery17105686725581784895_1567387993957&iAMSActivityId=51991&_everyRead=true&iTypeId=2&iFlowId=267733&iActId=2735&iModuleId=2735&_=156738817'
+        )
+
         url_page.append(url)
     # print(url_page)
 
@@ -93,7 +87,7 @@ def down_img():
         if len(img)==0:
             gg.release()
             break
-        else :
+        else:
             url = img.pop()
             gg.release()
             num = url[36:46]
@@ -102,7 +96,7 @@ def down_img():
             numm = 0
             while requests.get(url, headers=dailichi()).status_code != 200:
                 if url[44] == '0':
-                    url = url[:44] + '0' + str(int(url[44:46]) + 1) + url[46:]
+                    url = f'{url[:44]}0{str(int(url[44:46]) + 1)}{url[46:]}'
                 else:
                     url = url[:44] + str(int(url[44:46]) + 1) + url[46:]
                 # print(url)
@@ -110,17 +104,17 @@ def down_img():
                     break
                 numm += 1
 
-            with open(str(num) + '.jpg', 'wb')as f:
+            with open(f'{str(num)}.jpg', 'wb') as f:
                 f.write(requests.get(url, headers=dailichi()).content)
 
 
 
 if __name__ == '__main__':
     get_page()
-    for x in range(32):
+    for _ in range(32):
         threading.Thread(target=get_url).start()
 
     time.sleep(1)
 
-    for x in range(32):
+    for _ in range(32):
         threading.Thread(target=down_img).start()

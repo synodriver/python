@@ -22,11 +22,7 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 
 def 获取全国的总数据():
     url = 'http://www.dzyong.top:3005/yiqing/total'
@@ -35,20 +31,28 @@ def 获取全国的总数据():
     疑似=data['data'][0]['suspect']
     死亡=data['data'][0]['death']
     治愈=data['data'][0]['cured']
-    return "确诊:"+str(确诊)+'\n疑似:'+str(疑似)+'\n死亡:'+str(死亡)+'\n治愈:'+str(治愈)
+    return (
+        f"确诊:{str(确诊)}"
+        + '\n疑似:'
+        + str(疑似)
+        + '\n死亡:'
+        + str(死亡)
+        + '\n治愈:'
+        + str(治愈)
+    )
 
 def 获取历史数据():
     url ='http://www.dzyong.top:3005/yiqing/history'
     data = requests.get(url=url,headers=dailichi()).json()['data']
     # txt = []
-    if os.path.exists("%s.csv"%(data[0]['date'])):
-        os.remove("%s.csv"%(data[0]['date']))
-    with open('%s.csv'%(data[0]['date']),'a+')as f:
+    if os.path.exists(f"{data[0]['date']}.csv"):
+        os.remove(f"{data[0]['date']}.csv")
+    with open(f"{data[0]['date']}.csv", 'a+') as f:
         f.write('时间,确诊人数,疑似人数,治愈人数,死亡人数,疑似人数增量\n')
 
     for x in data[::-1]:
         # txt+=('时间:'+str(x['date']),'确诊人数:'+str(x['confirmedNum']),'疑似人数:'+str(x['suspectedNum']),'治愈人数:'+str(x['curesNum']),'死亡人数:'+str(x['deathsNum']),'疑似人数增量:'+str(x['suspectedIncr']))
-        with open('%s.csv'%(data[0]['date']),'a+')as f:
+        with open(f"{data[0]['date']}.csv", 'a+') as f:
             f.write(str(x['date'])+','+str(x['confirmedNum'])+','+str(x['suspectedNum'])+','+str(x['curesNum'])+','+str(x['deathsNum'])+','+str(x['suspectedIncr'])+'\n')
 
 def 获取疫情数据地区():

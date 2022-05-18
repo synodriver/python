@@ -16,11 +16,7 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 def dd(url):
     response = requests.get(url=url,headers=dailichi())
     txt = response.text
@@ -45,8 +41,7 @@ for num in range(1,3):
     txt = response.text
     sel = parsel.Selector(txt)
     urls  = sel.xpath('//div[@class="poi-row inn-archive__container"]//article/div/a/@href').getall()
-    for x in urls:
-        urlss.append(x)
+    urlss.extend(iter(urls))
 print(urlss)
 print(len(urlss))
 duoxiancheng(dd,urlss,1)

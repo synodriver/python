@@ -11,22 +11,22 @@
 @ModifyTime     :
 """
 
+
 import requests
 import os
 url = "http://meishi.meituan.com/i/api/channel/deal/list"
 path = 'F:\python\代码\美团\Cookie.txt'
-# print(path)
-file =open(path,'r')
-cook =str(file.read())
-file.close()
+with open(path,'r') as file:
+    cook =str(file.read())
 headers = {
-	'Accept': 'application/json',
-	'Cookie': str(cook),
-	'Host': 'meishi.meituan.com',
-	'Origin': 'http://meishi.meituan.com',
-	'Referer': 'http://meishi.meituan.com/i/?ci=59&stid_b=1&cevent=imt%2Fhomepage%2Fcategory1%2F1',
-	'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
+    'Accept': 'application/json',
+    'Cookie': cook,
+    'Host': 'meishi.meituan.com',
+    'Origin': 'http://meishi.meituan.com',
+    'Referer': 'http://meishi.meituan.com/i/?ci=59&stid_b=1&cevent=imt%2Fhomepage%2Fcategory1%2F1',
+    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
 }
+
 
 data = {
 	'uuid': "d01b76ac-372e-4740-876e-e42c86d46300",

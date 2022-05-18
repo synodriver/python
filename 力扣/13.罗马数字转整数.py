@@ -12,23 +12,23 @@ class Solution:
             if s[x]=='I':
                 if x==len(s)-1:
                     sum+=1
-                elif (s[x+1]=='V' or s[x+1]=='X'):
+                elif s[x + 1] in ['V', 'X']:
                     sum-=1
-                else :
+                else:
                     sum+=1
             elif s[x]=='X':
                 if x==len(s)-1:
                     sum+=10
-                elif (s[x+1]=='L' or s[x+1]=='C'):
+                elif s[x + 1] in ['L', 'C']:
                     sum-=10
-                else :
+                else:
                     sum+=10
             elif s[x]=='C':
                 if x==len(s)-1:
                     sum+=100
-                elif (s[x+1]=='D' or s[x+1]=='M'):
+                elif s[x + 1] in ['D', 'M']:
                     sum-=100
-                else :
+                else:
                     sum+=100
             elif s[x]=='V':
                 sum+=5

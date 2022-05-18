@@ -29,24 +29,25 @@ def down():
         if len(url_img)==0:
             gg.release()
             break
-        else :
+        else:
             url = url_img.pop()
             gg.release()
             url = url[:-3]
             try:
                 id = url[-12:-4]
-                urll = url+'png'
+                urll = f'{url}png'
                 # print(id)
                 head = {
-                    'referer': "http://www.pixiv.net/member_illust.php?mode=manga_big&illust_id="+str(id)+"&page=0",
-                    'User-Agent': '%s' % dailichi()
+                    'referer': f"http://www.pixiv.net/member_illust.php?mode=manga_big&illust_id={str(id)}&page=0",
+                    'User-Agent': f'{dailichi()}',
                 }
+
                 r= requests.get(urll,headers = head,timeout = 5,)
                 if (r.status_code==404):
-                    urll = urll[:-3]+'jpg'
+                    urll = f'{urll[:-3]}jpg'
                     r = requests.get(urll, headers=head,timeout = 5)
                 # print(urll)
-                with open('%s.jpg'%urll[-15:-7], mode='wb') as f:
+                with open(f'{urll[-15:-7]}.jpg', mode='wb') as f:
                     f.write(r.content)
             except:
                 pass
@@ -81,7 +82,7 @@ def shengchanzhe():
         if len(yemian)==0:
             gg.release()
             break
-        else :
+        else:
             url = yemian.pop()
             gg.release()
             response = requests.get(url)
@@ -89,31 +90,31 @@ def shengchanzhe():
             page_web = list(set(re.findall('href="/en/a/(.*?)"',response.text,re.S)))
             # print(page_web)
             for x in page_web:
-                page_url.append('https://www.pixivision.net/zh/a/'+x)
+                page_url.append(f'https://www.pixivision.net/zh/a/{x}')
 
 def get_yemian(z,y):
     global yemian
     for x in range(z,y+1):
-        yemian.append('https://www.pixivision.net/zh/c/illustration/?p=%s'%str(x))
+        yemian.append(f'https://www.pixivision.net/zh/c/illustration/?p={str(x)}')
 if __name__ == '__main__':
     z = int(input("请输入你的起始页面[a,b]："))
     y = int(input("请输入你的起始页面[b,b+]："))
     n = int(input("请输入你要下载的线程数(ps:线程太大倒是反爬系统监测推荐5到10)："))
     get_yemian(z,y)
     time.sleep(1)
-    for x in range(n):
+    for _ in range(n):
         threading.Thread(target=shengchanzhe).start()
     time.sleep(2)
 
     # print(page_url)
 
-    for x in range(n):
+    for _ in range(n):
         threading.Thread(target=main).start()
 
     time.sleep(2)
     # print(url_img)
 
-    for x in range(n):
+    for _ in range(n):
         threading.Thread(target=down).start()
 
 

@@ -22,18 +22,19 @@ def dailichi():
 def down_get_and_down(url,name,yy):
     try:
         id = url[-12:-4]
-        urll = url+'png'
+        urll = f'{url}png'
         # print(id)
         head = {
-            'referer': "http://www.pixiv.net/member_illust.php?mode=manga_big&illust_id="+str(id)+"&page=0",
-            'User-Agent': '%s' % dailichi()
+            'referer': f"http://www.pixiv.net/member_illust.php?mode=manga_big&illust_id={str(id)}&page=0",
+            'User-Agent': f'{dailichi()}',
         }
+
         r= requests.get(urll,headers = head,timeout = 5,)
         if (r.status_code==404):
-            urll = urll[:-3]+'jpg'
+            urll = f'{urll[:-3]}jpg'
             r = requests.get(urll, headers=head,timeout = 5)
         # print(urll)
-        with open(yy+'/'+'%s.jpg' % name, mode='wb') as f:
+        with open(f'{yy}/' + f'{name}.jpg', mode='wb') as f:
             f.write(r.content)
     except:
         pass
@@ -69,13 +70,12 @@ def main():
     if not os.path.exists(yy):
         os.mkdir(yy)
     response = requests.get(url)
-    if not os.path.exists(yy+'/'+yy+'.txt'):
-        with open(yy+'/'+yy+'.txt','w+',encoding='utf-8')as f:
+    if not os.path.exists(f'{yy}/{yy}.txt'):
+        with open(f'{yy}/{yy}.txt', 'w+', encoding='utf-8') as f:
             f.write(response.text)
 
-    f= open(yy+'/'+yy+'.txt','r',encoding='utf-8')
-    txt = f.read()
-    f.close()
+    with open(f'{yy}/{yy}.txt', 'r', encoding='utf-8') as f:
+        txt = f.read()
     # print(txt)
     img = re.findall(r'pixiv.context.mode(.*)</a></li></ul></nav></div>',txt,re.S)
     img = re.findall(r'thumbnail-filter lazy-image"data-src="(.*?)"data-type="illust"',str(img), re.S)
@@ -88,15 +88,15 @@ def main():
         x = x[:-16] + x[-5:]
         x = x.replace('c/240x480/img-master', 'img-original')
         # print(x)
-        try :
+        try:
             # down_get_and_down(x[:-3],num,yy)
             # maxx.acquire()
             threading.Thread(target=down_get_and_down,args=(x[:-3],num,yy)).start()
             # maxx.release()
             time.sleep(1)
-            print("下载第%s张图片成功！！" % num)
+            print(f"下载第{num}张图片成功！！")
         except:
-            print("下载第%s张图片失败！！" % num)
+            print(f"下载第{num}张图片失败！！")
         # time.sleep(1)
         num +=1
 if __name__ == '__main__':

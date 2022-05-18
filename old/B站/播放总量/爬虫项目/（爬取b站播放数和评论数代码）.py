@@ -19,11 +19,7 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 
 def get_data(av):
     url = f'http://api.bilibili.com/archive_stat/stat?aid={av}&type=jsonp'
@@ -31,7 +27,21 @@ def get_data(av):
     response = requests.get(url=url,headers=dailichi())
     txt = response.json()['data']
     with open('b站_播放_评论_硬币数.txt','a+',encoding='utf-8')as f:
-        f.write(str(av)+','+str(txt['view'])+','+str(txt['like'])+','+str(txt['reply'])+','+str(txt['coin'])+','+str(txt['share'])+','+str(txt['favorite'])+'\n')
+        f.write(
+            f'{str(av)},'
+            + str(txt['view'])
+            + ','
+            + str(txt['like'])
+            + ','
+            + str(txt['reply'])
+            + ','
+            + str(txt['coin'])
+            + ','
+            + str(txt['share'])
+            + ','
+            + str(txt['favorite'])
+            + '\n'
+        )
 
 def duoxiancheng(Hanshu,List,Time):
    import time
@@ -46,7 +56,7 @@ def get_tag(av):
     response = requests.get(url=url,headers=dailichi())
     txt = response.json()
     with open('tag.txt','a+',encoding='utf-8')as f:
-        f.write(str(av)+',')
+        f.write(f'{str(av)},')
         for x in txt['data']:
             # print(x['tag_name'])
             f.write(x['tag_name']+' ')
@@ -79,10 +89,10 @@ def get_title(av):
         title = title.replace('_哔哩哔哩 (゜-゜)つロ 干杯~-bilibili','')
         # print(title)
         with open('title.txt','a+',encoding='utf-8')as f:
-            f.write(str(av)+','+title+'\n')
+            f.write(f'{str(av)},{title}' + '\n')
     except:
         with open('title.txt','a+',encoding='utf-8')as f:
-            f.write(str(av)+','+'\n')
+            f.write(f'{str(av)},' + '\n')
 def main(av):
     get_data(av)
     get_tag(av)

@@ -14,18 +14,13 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 
 def get_cid(av):
     url = f'https://www.bilibili.com/video/av{av}'
     response = requests.get(url=url,headers=dailichi())
     txt = response.content.decode('utf-8')
-    cid = re.findall('cid=(.*?)&aid=.*?&',txt)[0]
-    return cid 
+    return re.findall('cid=(.*?)&aid=.*?&',txt)[0] 
 def get_danmu(av):
     cid = get_cid(av)
     url = f'https://api.bilibili.com/x/v1/dm/list.so?oid={cid}'
@@ -40,7 +35,7 @@ def get_danmu(av):
 
 def get_all_av(mid):
     AID = []
-    for num in range(0,100):
+    for num in range(100):
         url = f'https://space.bilibili.com/ajax/member/getSubmitVideos?mid={mid}&pagesize=100&tid=0&page={num}&keyword=&order=pubdate'
         # print(url)
         response = requests.get(url=url,headers=dailichi())
@@ -90,7 +85,7 @@ def cipin(path):
     result = sorted(count.items(),key=lambda x:x[1],reverse=True)
     for i in range(30):
         word,count=result[i]
-        print(str(i+1)+'->'+word,':',count)
+        print(f'{str(i+1)}->{word}', ':', count)
 
 import random
 import time 

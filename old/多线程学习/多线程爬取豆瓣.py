@@ -18,11 +18,7 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 name = []
 img=[]
 page_url = []
@@ -31,7 +27,7 @@ if not os.path.exists('豆瓣'):
     os.mkdir('豆瓣')
 def download_img(url,name):
     from  urllib.request import urlretrieve
-    urlretrieve(url,'豆瓣'+'/'+'%s.jpg'%name)
+    urlretrieve(url, '豆瓣'+'/' + f'{name}.jpg')
 def shengchanzhe():
     global img
     global name
@@ -60,21 +56,21 @@ def xiaofeizhe():
         title = name.pop()
         lock.release()
         req = requests.get(url)
-        with open('豆瓣'+'/'+'%s.jpg'%title,'wb')as f:
+        with open('豆瓣'+'/' + f'{title}.jpg', 'wb') as f:
             f.write(req.content)
 def page_url_get():
     global page_url
     for xx in range(0,246,25):
-        url = 'https://movie.douban.com/top250?start=%s&filter='%str(xx)
+        url = f'https://movie.douban.com/top250?start={str(xx)}&filter='
         page_url.append(url)
 if __name__ == '__main__':
     t2 = time.time()
     page_url_get()
-    for num in range(64):
+    for _ in range(64):
         t = threading.Thread(target=shengchanzhe)
         t.start()
     time.sleep(1)
-    for num in range(64):
+    for _ in range(64):
         t= threading.Thread(target=xiaofeizhe)
         t.start()
     time.sleep(1)

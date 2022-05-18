@@ -18,14 +18,10 @@ def dailichi():
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     ]
     dai = random.choice(daili)
-    # print(dai)
-    head  ={
-        'User-Agent':'%s'% dai
-    }
-    return head
+    return {'User-Agent': f'{dai}'}
 def download_img(url,name):
     from  urllib.request import urlretrieve
-    urlretrieve(url,'./%s.jpg'%name)
+    urlretrieve(url, f'./{name}.jpg')
 def html_down(url):
     response = requests.get(url,headers = dailichi())
     sle = parsel.Selector(response.text)
@@ -41,23 +37,20 @@ def html_down(url):
     if not os.path.exists(name):
         os.mkdir(name)
     img =sle.xpath('//*[@id="the-post"]/div/div[2]').re('src="(.*?)"')
-    # print(id)
-    num = 1
-    for url_img in img[:-2]:
+    for num, url_img in enumerate(img[:-2], start=1):
         # print(url_img)
         try:
-            download_img(url_img,'./'+name+'/'+'%s'%num)
-            print('下载第%s张图片成功' % num)
+            download_img(url_img, f'./{name}/' + f'{num}')
+            print(f'下载第{num}张图片成功')
         except:
             print("这一张图下载失败！！")
-        num+=1
 def main(url):
     response = requests.get(url)
     sle = parsel.Selector(response.text)
     urll = list(set(sle.xpath('//*[@id="main-content"]/div[1]/div[3]').re('<a href="(.*?).html">')))
     for xx in urll:
         # print(x+'.html')
-        xx = xx +'.html'
+        xx = f'{xx}.html'
         # print(xx)
         html_down(xx)
         # print("休息五秒钟（为了防止他认为你是爬虫）")
@@ -75,8 +68,8 @@ if __name__ == '__main__':
     for num in range(z,y+1):
         if num == 1:
             url ='http://acg17.com/category/meitu/pixiv-painter/'
-        else :
-            url ='http://acg17.com/category/meitu/pixiv-painter/page/%s/'%num
+        else:
+            url = f'http://acg17.com/category/meitu/pixiv-painter/page/{num}/'
         # main(url)
         threading.Thread(target=main,args=(url,)).start()
     t2 = time.time()

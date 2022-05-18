@@ -8,17 +8,16 @@
 class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
         x = []
-        while (len(nums1)!=0 and len(nums2)!=0):
+        while nums1 and nums2:
             # print(nums1[0],nums2[0])
             if nums1[0]<nums2[0]:
                 x.append(nums1[0])
                 nums1.pop(0)
             elif nums1[0]==nums2[0]:
-                x.append(nums1[0])
-                x.append(nums2[0])
+                x.extend((nums1[0], nums2[0]))
                 nums1.pop(0)
                 nums2.pop(0)
-            else :
+            else:
                 x.append(nums2[0])
                 nums2.pop(0)
         x+=nums1

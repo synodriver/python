@@ -14,21 +14,22 @@ def translation():
     # print(t)
     i  = str(r)+ str(random.randint(0,10))
     # print(i)
-    data={
+    data = {
         'i': code,
         'from': 'AUTO',
         'to': 'AUTO',
         'smartresult': 'dict',
         'client': 'fanyideskweb',
         'salt': i,
-        'sign':make_md5("fanyideskweb" + code + i + "n%A-rKaT5fb[Gy?;N5@Tj"),
+        'sign': make_md5(f"fanyideskweb{code}{i}n%A-rKaT5fb[Gy?;N5@Tj"),
         'ts': r,
-        'bv':t,
+        'bv': t,
         'doctype': 'json',
         'version': '2.1',
         'keyfrom': 'fanyi.web',
         'action': 'FY_BY_REALTlME',
     }
+
     head = {
         'Accept': 'application/json, text/javascript, */*; q=0.01',
         'Accept-Encoding': 'gzip, deflate',

@@ -26,16 +26,16 @@ def getGTK(cookie):
 
 def get_g_qzonetoken():
     with open('1.txt','r',encoding='utf-8')as f:
-        g_qzonetoken = re.findall('window\.g_qzonetoken = \(function\(\)\{ try\{return (.*?);\} catch\(e\)',f.read(),re.S)[0]
         # print(g_qzonetoken)
-        return  g_qzonetoken
+        return re.findall(
+            'window\.g_qzonetoken = \(function\(\)\{ try\{return (.*?);\} catch\(e\)',
+            f.read(),
+            re.S,
+        )[0]
 
 
 def get_cookies(driver):
-    cookie = {}
-    for elem in driver.get_cookies():  # 取cookies
-        cookie[elem['name']] = elem['value']
-    return cookie
+    return {elem['name']: elem['value'] for elem in driver.get_cookies()}
 driver = login()
 time.sleep(1)
 html = driver.page_source
@@ -50,10 +50,23 @@ driver.get_cookies()
 # driver.get(url)
 # time.sleep(2)
 for begin in range(0,100000,40):
-    url = 'https://user.qzone.qq.com/proxy/domain/taotao.qq.com/cgi-bin/emotion_cgi_msglist_v6?uin=' + str(
-    qq_num) + '&ftype=0&sort=0&pos=' + str(begin) + '&num=40&replynum=200&g_tk=' + str(
-    tk) + '&callback=_preloadCallback&code_version=1&format=jsonp&need_private_comment=1&qzonetoken=' + str(
-    g_qzonetoken) + '&g_tk=' + str(tk)
+    url = (
+        (
+            (
+                (
+                    f'https://user.qzone.qq.com/proxy/domain/taotao.qq.com/cgi-bin/emotion_cgi_msglist_v6?uin={str(qq_num)}'
+                    + '&ftype=0&sort=0&pos='
+                )
+                + str(begin)
+                + '&num=40&replynum=200&g_tk='
+            )
+            + str(tk)
+            + '&callback=_preloadCallback&code_version=1&format=jsonp&need_private_comment=1&qzonetoken='
+        )
+        + str(g_qzonetoken)
+        + '&g_tk='
+    ) + str(tk)
+
     driver.get(url)
     # html = driver.page_source
     msg_list_json= driver.page_source
@@ -65,8 +78,7 @@ for begin in range(0,100000,40):
     if message != []:
         if str(message[0]) == '对不起,主人设置了保密,您没有权限查看':  # 对不起,主人设置了保密,您没有权限查看
             print("不准看")
-            pass
-        else :
+        else:
             msg_list_json = msg_list_json.split("msglist")[1]  # 拆分json，缩小范围，也能加快解析速度
             msg_list_json = msg_list_json.split("smoothpolicy")[0]
             msg_list_json = msg_list_json.split("commentlist")[1:]
@@ -87,7 +99,7 @@ for begin in range(0,100000,40):
                     msg_time2 = re.findall(abtract_pattern, str(text))
                     # 合并发送内容 格式：评论+转发内容
                     if msg_time2 != []:
-                        msg = msg + "  转发内容:" + str(msg_time2[0][0])
+                        msg = f"{msg}  转发内容:{str(msg_time2[0][0])}"
                 else:
                     # 3、说说内容为空，检查是否为 =>只有图片的说说 or 转发，不配文字
                     # 获取正文发送时间 （发送时间分为：正文发送时间 or 转发时间）
@@ -101,7 +113,7 @@ for begin in range(0,100000,40):
                         # 如果没有正文发送时间，那么就是说这条说为 =>转发，不配文字
                         abtract_pattern = re.compile('\}\],"content":"(.*?)"},"rt_createTime":"(.*?)","', re.S)
                         msg_time = re.findall(abtract_pattern, str(text))
-                        msg = "  转发内容:" + str(msg_time[0][0])
+                        msg = f"  转发内容:{str(msg_time[0][0])}"
                         sendTime = str(msg_time[0][1])
 
                 msg= msg.replace('\\n','')
@@ -121,8 +133,8 @@ for begin in range(0,100000,40):
                 msg= msg.replace('9','')
                 msg= msg.replace('0','')
                 msg= msg.replace('e','')
-                print(sendTime + " : " + msg)
-                with open(qq_num+'.txt','a',encoding='utf-8')as f:
+                print(f"{sendTime} : {msg}")
+                with open(f'{qq_num}.txt', 'a', encoding='utf-8') as f:
                     f.write(msg)
                     f.write('\n')
 
@@ -147,7 +159,7 @@ def ciyun(path):
    plt.imshow(wordcloud, interpolation="bilinear")
    plt.axis("off")
    plt.show()
-ciyun(qq_num+'.txt')
+ciyun(f'{qq_num}.txt')
 
 
 

@@ -15,17 +15,17 @@ class Solution:
             x = x[::-1]    
             for i in range(len(x)):
                 if x[i]!='0':
-                    return x[i:] 
-        else :
+                    return x[i:]
+        else:
             x = str(x)
             # print()
-            x = '-'+x[::-1][:-1]
+            x = f'-{x[::-1][:-1]}'
             # y = x.find('0')
             # print(y)
             # print(x)
             for i in range(1,len(x)):
                 # print(x[i])
                 if x[i]!='0':
-                    return '-'+x[i:]
+                    return f'-{x[i:]}'
 # @lc code=end
 
